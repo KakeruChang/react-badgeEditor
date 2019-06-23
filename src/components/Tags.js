@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { deleteTag, editTag } from '../actions/actions';
 
-export default class Tags extends Component {
+class Tags extends Component {
   constructor() {
     super();
     // 要使用this就要super();
@@ -64,3 +66,24 @@ export default class Tags extends Component {
     });
   }
 }
+
+const mapStateToProps = state => {
+  return {
+    tags: state.tags
+  };
+};
+const mapDispacthToProps = dispatch => {
+  return {
+    deleteTag: id => {
+      dispatch(deleteTag(id));
+    },
+    editTag: (id, value) => {
+      dispatch(editTag(id, value));
+    }
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispacthToProps
+)(Tags);

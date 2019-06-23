@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { addTag } from '../actions/actions';
 
-export default class InputGroup extends Component {
+class InputGroup extends Component {
   constructor() {
     super();
     this.state = {
@@ -53,3 +55,16 @@ export default class InputGroup extends Component {
     );
   }
 }
+
+const mapDispacthToProps = dispatch => {
+  return {
+    addTag: input => {
+      dispatch(addTag(input));
+    }
+  };
+};
+
+export default connect(
+  null,
+  mapDispacthToProps
+)(InputGroup);
