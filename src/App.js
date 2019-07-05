@@ -1,14 +1,26 @@
 import React, { Component } from 'react';
-import Title from './components/Title';
-import Tags from './components/Tags';
-import InputGroup from './components/InputGroup';
-import { createStore } from 'redux';
+import { Route } from 'react-router-dom';
+import Introduction from './components/Introduction';
+import About from './components/About';
+import Navbar from './components/navbar';
+import { createStore, compose, applyMiddleware } from 'redux';
+import thunk from 'redux-thunk';
 import tagReducer from './reducers/reducers';
 import { Provider } from 'react-redux';
+import { fetchTagsFromFirebase } from './actions/actions';
 
-let store = createStore(
+// establish initial state
+// const initTodoState = {
+//   tags: []
+// };
+
+// establish Store
+const store = createStore(
   tagReducer,
-  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+  compose(
+    applyMiddleware(thunk),
+    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+  )
 );
 
 export default class App extends Component {
@@ -58,30 +70,23 @@ export default class App extends Component {
   //     }
   //   }
   // }
+  // 啟動時從Firebase載入待辦事項
+  componentDidMount() {
+    store.dispatch(fetchTagsFromFirebase());
+  }
 
   render() {
     return (
       <Provider store={store}>
         <div>
-          <Title />
+          {/* <Title />
           <Tags />
-          <InputGroup />
-          {/* <Title length={this.state.tags.length} />
-          <Tags
-            tags={this.state.tags}
-            deleteTag={id => {
-              this.deleteTag(id);
-            }}
-            editTag={(id, value) => {
-              this.editTag(id, value);
-            }}
-          />
-          <InputGroup
-            addTag={input => {
-              this.addTag(input);
-            }}
-          /> */}
-          {/* 以箭頭函式將this指向函式宣告的物件 */}
+          <InputGroup /> */}
+          <Navbar />
+          <Route path='/' exact component={Introduction} />
+          <Route path='/about' component={About} />
+          {/* <Introduction />
+          <About /> */}
         </div>
       </Provider>
     );

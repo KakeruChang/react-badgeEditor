@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { deleteTag, editTag } from '../actions/actions';
+import { deleteTag, editTag } from '../../actions/actions';
+// import { deleteTag, editTag, updateToFirebase } from '../actions/actions';
 
 class Tags extends Component {
   constructor() {
