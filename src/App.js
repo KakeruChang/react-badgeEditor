@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { Route } from 'react-router-dom';
-import Introduction from './components/Introduction';
-import About from './components/About';
+// import { Route } from 'react-router-dom';
 import Navbar from './components/navbar';
+import { renderRoutes } from 'react-router-config';
+import routes from './router/routes';
 import { createStore, compose, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 import tagReducer from './reducers/reducers';
@@ -83,8 +83,23 @@ export default class App extends Component {
           <Tags />
           <InputGroup /> */}
           <Navbar />
-          <Route path='/' exact component={Introduction} />
-          <Route path='/about' component={About} />
+          {/* <Route path='/' exact component={Introduction} />
+          <Route path='/about' component={About} /> */}
+          <div className='container'>{renderRoutes(routes)}</div>
+
+          {/* {routes.map((route, i) => {
+            const { path, exact, routes } = route;
+            return (
+              <Route
+                key={i}
+                path={path}
+                exact={exact}
+                render={routeProps => (
+                  <route.component routes={routes} {...routeProps} />
+                )}
+              />
+            );
+          })} */}
           {/* <Introduction />
           <About /> */}
         </div>

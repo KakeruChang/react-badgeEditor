@@ -36,12 +36,14 @@ class Tags extends Component {
 
   render() {
     const tagStyle = {
-      marginRight: `10px`,
-      border: `solid 1px #000`
+      // marginRight: `10px`,
+      // border: `solid 1px #000`
+      fontSize: `150%`
     };
     return this.props.tags.map(tag => {
       return (
         <span
+          className='mr-3 my-2 badge badge-primary'
           onClick={() => this.startEdit(tag.id, tag.value)}
           style={tagStyle}
           key={tag.id}
@@ -56,6 +58,7 @@ class Tags extends Component {
             <span>{tag.value}</span>
           )}
           <button
+            className='ml-2 btn text-light'
             onClick={() => {
               this.props.deleteTag(tag.id);
             }}

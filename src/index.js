@@ -3,6 +3,8 @@ import ReactDOM from 'react-dom';
 import { BrowserRouter, Switch } from 'react-router-dom';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
+// import 'bootstrap';
+import 'bootstrap/scss/bootstrap.scss';
 
 ReactDOM.render(
   <BrowserRouter>
