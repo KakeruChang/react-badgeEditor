@@ -18,12 +18,22 @@ export const getTags = tags => {
   return { type: 'GET_TAGS', tags };
 };
 
-// export const getTags = () => {
-//   return {
-//     type: 'GET_TAGS',
-//     tags: firebaseData.tags
-//   };
-// };
+export const beginEdit = () => {
+  return {
+    type: 'BEGIN_EDIT'
+  };
+};
+
+export const endWithSaveEdit = () => {
+  return {
+    type: 'END_WITH_SAVE_EDIT'
+  };
+};
+export const endWithCancelEdit = () => {
+  return {
+    type: 'END_WITH_CANCEL_EDIT'
+  };
+};
 
 export const addTag = tag => {
   return {
@@ -54,9 +64,13 @@ export const editTag = (id, value) => {
 // 		payload: { isFetchingTodoList: true }
 // 	};
 // };
-export const updateToFirebase = tags => {
-  firebaseDb.ref('tags').set(tags);
+
+export const updateToFirebase = (target, content) => {
+  firebaseDb.ref(target).set(content);
 };
+// export const updateToFirebase = tags => {
+//   firebaseDb.ref('tags').set(tags);
+// };
 
 // 1. 開始呼叫後端資料API
 export const fetchTagsFromFirebase = () => {

@@ -1,0 +1,11 @@
+.hoverCircleButton {
+  &:hover {
+    border: solid 1px #fff;
+  }
+}
+.cursor-pointer {
+  cursor: pointer;
+  &:hover {
+    color: #000;
+  }
+}

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { deleteTag, editTag } from '../../actions/actions';
+import '../../style/common.scss';
 // import { deleteTag, editTag, updateToFirebase } from '../actions/actions';
 
 class Tags extends Component {
@@ -40,31 +41,45 @@ class Tags extends Component {
       // border: `solid 1px #000`
       fontSize: `150%`
     };
+    if (!this.props.isReadOnly) {
+      // when edit , render with tmp
+      return this.props.tmpTags.map(tag => {
+        return (
+          <span
+            onClick={() => this.startEdit(tag.id, tag.value)}
+            className='mr-3 my-2 badge badge-primary cursor-pointer'
+            style={tagStyle}
+            key={tag.id}
+          >
+            {this.state.editID === tag.id ? (
+              <input
+                onChange={event => this.editHandler(event)}
+                onKeyDown={event => this.saveEdit(event)}
+                value={this.state.editValue}
+              />
+            ) : (
+              <span>{tag.value}</span>
+            )}
+            <button
+              className='ml-2 btn text-light hoverCircleButton'
+              onClick={() => {
+                this.props.deleteTag(tag.id);
+              }}
+            >
+              X
+            </button>
+          </span>
+        );
+      });
+    }
     return this.props.tags.map(tag => {
       return (
         <span
           className='mr-3 my-2 badge badge-primary'
-          onClick={() => this.startEdit(tag.id, tag.value)}
           style={tagStyle}
           key={tag.id}
         >
-          {this.state.editID === tag.id ? (
-            <input
-              onChange={event => this.editHandler(event)}
-              onKeyDown={event => this.saveEdit(event)}
-              value={this.state.editValue}
-            />
-          ) : (
-            <span>{tag.value}</span>
-          )}
-          <button
-            className='ml-2 btn text-light'
-            onClick={() => {
-              this.props.deleteTag(tag.id);
-            }}
-          >
-            X
-          </button>
+          <span>{tag.value}</span>
         </span>
       );
     });
@@ -73,7 +88,9 @@ class Tags extends Component {
 
 const mapStateToProps = state => {
   return {
-    tags: state.tags
+    tags: state.tags,
+    tmpTags: state.tmpTags,
+    isReadOnly: state.isReadOnly
   };
 };
 const mapDispacthToProps = dispatch => {

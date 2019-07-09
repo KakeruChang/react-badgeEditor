@@ -37,32 +37,38 @@ class InputGroup extends Component {
 
   render() {
     return (
-      <div className='input-group'>
-        <input
-          type='text'
-          className='form-control'
-          placeholder='Input the tag you want'
-          onChange={event => this.handleChange(event)}
-          onKeyDown={event => this.handleKeyDown(event)}
-          value={this.state.newTag.value}
-        />
-        <div className='input-group-append'>
-          <button
-            className='btn btn-outline-secondary'
-            type='button'
-            onClick={this.addTag}
-          >
-            新增
-          </button>
-        </div>
+      <div>
+        {this.props.isReadOnly ? (
+          <div />
+        ) : (
+          <div className='input-group'>
+            <input
+              type='text'
+              className='form-control'
+              placeholder='Input the tag you want'
+              onChange={event => this.handleChange(event)}
+              onKeyDown={event => this.handleKeyDown(event)}
+              value={this.state.newTag.value}
+            />
+            <div className='input-group-append'>
+              <button
+                className='btn btn-outline-secondary'
+                type='button'
+                onClick={this.addTag}
+              >
+                新增
+              </button>
+            </div>
 
-        {/* <button
-          onClick={() => {
-            this.props.addTag(this.state.newTag);
-          }}
-        >
-          新增
-        </button> */}
+            {/* <button
+        onClick={() => {
+          this.props.addTag(this.state.newTag);
+        }}
+      >
+        新增
+      </button> */}
+          </div>
+        )}
       </div>
     );
   }
@@ -70,7 +76,8 @@ class InputGroup extends Component {
 
 const mapStateToProps = state => {
   return {
-    tags: state.tags
+    tags: state.tags,
+    isReadOnly: state.isReadOnly
   };
 };
 const mapDispacthToProps = dispatch => {

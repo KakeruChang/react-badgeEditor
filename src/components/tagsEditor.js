@@ -6,10 +6,16 @@ import InputGroup from '../components/tags/InputGroup';
 export default class tagsEditor extends Component {
   render() {
     return (
-      <div>
-        <Title />
-        <Tags />
-        <InputGroup />
+      <div className='row'>
+        <div className='col-12'>
+          <Title />
+        </div>
+        <div className='col-12'>
+          <Tags />
+        </div>
+        <div className='col-12'>
+          <InputGroup />
+        </div>
         {/* <Title length={this.state.tags.length} />
           <Tags
             tags={this.state.tags}
