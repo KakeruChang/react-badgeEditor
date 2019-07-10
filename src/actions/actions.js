@@ -1,4 +1,4 @@
-import { firebaseDb, firebaseData } from '../components/state/firebase';
+import { firebaseDb, firebaseData } from '../common/firebase';
 
 export const beginFetchTagList = () => {
   return {

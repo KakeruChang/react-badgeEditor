@@ -9,7 +9,7 @@ class Title extends Component {
 
 const mapStateToProps = state => {
   return {
-    length: state.tags.length
+    length: state.data.tags.length
   };
 };
 

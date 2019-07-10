@@ -1,62 +1,84 @@
 import { updateToFirebase } from '../actions/actions';
-import { initialState } from '../components/state/initial';
+import { initialState } from '../state/initial';
 
 const tagReducer = (state = initialState, action) => {
   switch (action.type) {
     case 'GET_TAGS':
-      return { tags: [...action.tags], isReadOnly: state.isReadOnly };
+      return {
+        data: { tags: action.tags },
+        tmpData: {
+          tags: []
+        },
+        isReadOnly: state.isReadOnly
+      };
     // return { tags: [...state.tags, ...action.tags] };
     case 'BEGIN_EDIT':
+      const tmpBeginEdit = [];
+      state.data.tags.forEach((tag, i) => {
+        tmpBeginEdit.push({ id: tag.id, value: tag.value });
+      });
       return {
-        tags: [...state.tags],
-        tmpTags: [...state.tags],
+        data: { tags: state.data.tags },
+        tmpData: { tags: tmpBeginEdit },
         isReadOnly: false
       };
     case 'END_WITH_SAVE_EDIT':
-      console.log('END_WITH_SAVE_EDIT');
-      updateToFirebase('tags', [...state.tags]);
-      return { tags: [...state.tmpTags], isReadOnly: true };
+      updateToFirebase('tags', [...state.tmpData.tags]);
+      return {
+        data: { tags: state.tmpData.tags },
+        tmpData: {
+          tags: []
+        },
+        isReadOnly: true
+      };
     case 'END_WITH_CANCEL_EDIT':
-      console.log('END_WITH_CANCEL_EDIT');
-      return { tags: [...state.tags], isReadOnly: true };
+      return {
+        data: { tags: state.data.tags },
+        tmpData: {
+          tags: []
+        },
+        isReadOnly: true
+      };
     case 'ADD_TAG':
-      for (let i = 0; i < state.tags.length; i++) {
-        if (state.tags[i].value === action.tag.value) {
+      for (let i = 0; i < state.tmpData.tags.length; i++) {
+        if (state.tmpData.tags[i].value === action.tag.value) {
           console.log('已有重複標籤');
           return state;
         }
       }
-      const result = [...state.tags, action.tag];
-      // updateToFirebase('tags', result);
+      const result = [...state.tmpData.tags, action.tag];
       return {
-        tags: result,
-        tmpTags: [...state.tags],
+        data: { tags: state.data.tags },
+        tmpData: { tags: result },
         isReadOnly: state.isReadOnly
       };
     case 'DELETE_TAG':
-      if (state.tags.length) {
-        const tmp = state.tags.slice();
-        for (let i = 0; i < state.tags.length; i++) {
-          if (action.id === state.tags[i].id) {
-            tmp.splice(i, 1);
-            const result = [...tmp];
-            // updateToFirebase('tags', result);
-            return {
-              tags: result,
-              isReadOnly: state.isReadOnly
-            };
-          }
+      //if (state.tags.length) {
+      const tmpDeleteTag = state.tmpData.tags.slice();
+      for (let i = 0; i < state.tmpData.tags.length; i++) {
+        if (action.id === state.tmpData.tags[i].id) {
+          tmpDeleteTag.splice(i, 1);
+          const result = tmpDeleteTag;
+          return {
+            data: { tags: state.data.tags },
+            tmpData: { tags: result },
+            isReadOnly: state.isReadOnly
+          };
         }
       }
+      //}
       return state;
     case 'EDIT_TAG':
-      const tmp = state.tags.slice();
-      for (let i = 0; i < state.tags.length; i++) {
-        if (action.id === tmp[i].id) {
-          tmp[i].value = action.value;
-          const result = [...tmp];
-          updateToFirebase(result);
-          return { tags: result, isReadOnly: state.isReadOnly };
+      const tmpEditTag = state.tmpData.tags.slice();
+      for (let i = 0; i < state.tmpData.tags.length; i++) {
+        if (action.id === tmpEditTag[i].id) {
+          tmpEditTag[i].value = action.value;
+          const result = tmpEditTag;
+          return {
+            data: { tags: state.data.tags },
+            tmpData: { tags: result },
+            isReadOnly: state.isReadOnly
+          };
         }
       }
       return state;

@@ -26,6 +26,7 @@ class Tags extends Component {
     });
   }
   saveEdit(event) {
+    console.log(event);
     if (event.keyCode === 13) {
       this.props.editTag(this.state.editID, this.state.editValue);
       this.setState({
@@ -33,6 +34,13 @@ class Tags extends Component {
         editValue: null
       });
     }
+  }
+  saveEditBlur(event) {
+    console.log(event);
+    this.setState({
+      editID: null,
+      editValue: null
+    });
   }
 
   render() {
@@ -55,6 +63,7 @@ class Tags extends Component {
               <input
                 onChange={event => this.editHandler(event)}
                 onKeyDown={event => this.saveEdit(event)}
+                onBlur={event => this.saveEditBlur(event)}
                 value={this.state.editValue}
               />
             ) : (
@@ -88,8 +97,8 @@ class Tags extends Component {
 
 const mapStateToProps = state => {
   return {
-    tags: state.tags,
-    tmpTags: state.tmpTags,
+    tags: state.data.tags,
+    tmpTags: state.tmpData.tags,
     isReadOnly: state.isReadOnly
   };
 };
